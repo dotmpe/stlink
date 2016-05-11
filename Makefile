@@ -2,7 +2,7 @@ all: stlink-test
 
 .PHONY: test load-kext
 
-CFLAGS = -std=gnu99 -Wall -Werror
+CFLAGS = -std=gnu99 -Wall -Werror -Wno-unused-function
 DGFLAGS = -MMD -MP -MT $@
 
 -include config.mak
@@ -12,7 +12,7 @@ LIBSTLINK_SOURCES = stlink-libusb.c stlink-cmd.c
 -include stlink-test.d
 
 stlink-test: main.c $(addprefix libstlink/, $(LIBSTLINK_SOURCES)) Makefile
-	$(CC) -o $@ $(CPPFLAGS) -I. -Ilibstlink $(DGFLAGS) $(CFLAGS) main.c $(addprefix libstlink/,stlink-libusb.c stlink-cmd.c) $(LDFLAGS) -lusb-1.0
+	$(CC) -o $@ $(CPPFLAGS) -I. -Ilibstlink -Ilibusb-1.0/libusb $(DGFLAGS) $(CFLAGS) main.c $(addprefix libstlink/,stlink-libusb.c stlink-cmd.c) $(LDFLAGS) -lusb-1.0
 
 test: stlink-test
 	./stlink-test
